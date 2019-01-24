@@ -53,7 +53,7 @@ function spotifySong(search){
     spotify.search({ type: 'track', query: search })
     .then(function(response) {
         for (var i = 0; i < 5; i++) {
-            var spotifyResults = 
+            const spotifyResults = 
                 "--------------------------------------------------------------------" +
                     "\nArtist(s): " + response.tracks.items[i].artists[0].name + 
                     "\nSong Name: " + response.tracks.items[i].name +
@@ -99,7 +99,7 @@ function noInput(){
         if (error) {
             return console.log(error);
         }
-        var dataArr = data.split(',');
+        const dataArr = data.split(',');
         performSearch(dataArr[0], dataArr[1]);
     })
 };
