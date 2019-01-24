@@ -24,7 +24,10 @@ function performSearch(api){
 
 
 function bandsInTown(search){
-    axios.get("https://rest.bandsintown.com/artists/" + search + "/events?app_id=codingbootcamp")
+
+    const URL = "https://rest.bandsintown.com/artists/" + search + "/events?app_id=codingbootcamp"
+
+    axios.get(URL)
     .then(function(response) { 
         console.log("\nNext 5 shows for " + search + ":")   
         for (let i = 0; i < 5; i++) {
@@ -44,7 +47,7 @@ function bandsInTown(search){
 
 function spotifySong(search){
     if(!search){
-        search = "The Sign";
+        search = "The Sign Ace of Base";
     }
     spotify.search({ type: 'track', query: search })
     .then(function(response) {
@@ -65,8 +68,34 @@ function spotifySong(search){
 };
 
 function omdb(search){
-    console.log("omdb")
+    
+    
+    if(!search){
+        search = "Mr Nobody";
+    }
+    const URL = "https://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=trilogy"
+    axios.get(URL)
+    .then(function(response) { 
+        console.log("\nYou searched OMDB for " + search + ":")   
+        const movieResults = 
+            "\n--------------------------------------------------------------------" +
+            "\nMovie Title: " + response.data.Title + 
+            "\nYear Released: " + response.data.Year +
+            "\nIMDB Rating: " + response.data.imdbRating +
+            "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value +
+            "\nCountry(s): " + response.data.Country +
+            "\nLanguage(s): " + response.data.Language +
+            "\nPlot: " + response.data.Plot +
+            "\nActors: " + response.data.Actors;
+        console.log(movieResults);
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
 };
+
+//www.omdbapi.com/?t=Mr.+Nobody
 
 function noInput(search){
     console.log("random.txt")
