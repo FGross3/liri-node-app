@@ -5,6 +5,7 @@ var keys = require("./keys.js");
 const Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
+
 const api = process.argv[2];
 const search = process.argv.slice(3).join(" ");
 
@@ -12,7 +13,7 @@ function performSearch(api){
     switch (api) {
         case 'concert-this' : bandsInTown(search)
             break;
-        case 'spotify-this-song' : spotify(search)
+        case 'spotify-this-song' : spotifySong(search)
             break;
         case 'movie-this' : omdb(search);
             break;
@@ -41,10 +42,10 @@ function bandsInTown(search){
     });
 };
 
-function spotify(search){
-    // if(!search){
-    //     search = "The Sign";
-    // }
+function spotifySong(search){
+    if(!search){
+        search = "The Sign";
+    }
     spotify.search({ type: 'track', query: search })
     .then(function(response) {
         for (var i = 0; i < 5; i++) {
