@@ -1,15 +1,16 @@
 require("dotenv").config();
 const axios = require('axios');
 const moment = require('moment');
-var keys = require("./keys.js");
+const keys = require("./keys.js");
 const Spotify = require("node-spotify-api");
-var spotify = new Spotify(keys.spotify);
+const spotify = new Spotify(keys.spotify);
+const fs = require('fs');
 
 
 const api = process.argv[2];
 const search = process.argv.slice(3).join(" ");
 
-function performSearch(api){
+function performSearch(api, search){
     switch (api) {
         case 'concert-this' : bandsInTown(search)
             break;
@@ -17,7 +18,7 @@ function performSearch(api){
             break;
         case 'movie-this' : omdb(search);
             break;
-        case 'do-what-it-says' : noInput(search)
+        case 'do-what-it-says' : noInput()
             break;
     }
 }
@@ -68,8 +69,6 @@ function spotifySong(search){
 };
 
 function omdb(search){
-    
-    
     if(!search){
         search = "Mr Nobody";
     }
@@ -95,12 +94,16 @@ function omdb(search){
     })
 };
 
-//www.omdbapi.com/?t=Mr.+Nobody
-
-function noInput(search){
-    console.log("random.txt")
+function noInput(){
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        var dataArr = data.split(',');
+        performSearch(dataArr[0], dataArr[1]);
+    })
 };
 
-performSearch(api);
+performSearch(api, search);
 
 
