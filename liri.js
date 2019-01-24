@@ -1,8 +1,9 @@
+require("dotenv").config();
 const axios = require('axios');
 const moment = require('moment');
-// require("dotenv").config();
-// var keys = require("./keys.js");
-// var spotify = new Spotify(keys.spotify);
+var keys = require("./keys.js");
+const Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
 
 const api = process.argv[2];
 const search = process.argv.slice(3).join(" ");
@@ -41,7 +42,25 @@ function bandsInTown(search){
 };
 
 function spotify(search){
-    console.log("spotify")
+    // if(!search){
+    //     search = "The Sign";
+    // }
+    spotify.search({ type: 'track', query: search })
+    .then(function(response) {
+        for (var i = 0; i < 5; i++) {
+            var spotifyResults = 
+                "--------------------------------------------------------------------" +
+                    "\nArtist(s): " + response.tracks.items[i].artists[0].name + 
+                    "\nSong Name: " + response.tracks.items[i].name +
+                    "\nAlbum Name: " + response.tracks.items[i].album.name +
+                    "\nPreview Link: " + response.tracks.items[i].preview_url;
+                    
+            console.log(spotifyResults);
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 };
 
 function omdb(search){
